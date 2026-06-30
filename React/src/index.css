@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #050A14; --navy: #0A1628; --card: rgba(13,37,69,0.6);
+  --blue: #2563EB; --blue-lt: #3B82F6; --blue-dim: rgba(37,99,235,0.15);
+  --silver: #94A3B8; --silver-lt: #CBD5E1; --white: #F8FAFC;
+  --border: rgba(148,163,184,0.12); --r: 12px; --r-lg: 20px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--silver-lt); line-height: 1.6; overflow-x: hidden; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 2px; }
+a { color: inherit; text-decoration: none; }
+button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; background: none; }
+img { max-width: 100%; display: block; }
+
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 26px; border-radius: var(--r); font-size: 14px; font-weight: 600; transition: all 0.2s ease; cursor: pointer; }
+.btn-primary { background: var(--blue); color: #fff; border: 2px solid var(--blue); }
+.btn-primary:hover { background: var(--blue-lt); border-color: var(--blue-lt); transform: translateY(-2px); }
+.btn-outline { background: transparent; color: var(--silver-lt); border: 2px solid rgba(148,163,184,0.3); }
+.btn-outline:hover { border-color: var(--blue-lt); color: var(--blue-lt); transform: translateY(-2px); }
+
+@keyframes fadeUp { from { opacity:0; transform: translateY(28px); } to { opacity:1; transform: translateY(0); } }
+@keyframes shimmer { 0% { background-position: -300% center; } 100% { background-position: 300% center; } }
+@keyframes floatY { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }

@@ -1,0 +1,5 @@
+Node.js/config/config.env
+*.env
+Node.js/node_modules/
+React/node_modules/
+node_modules/
