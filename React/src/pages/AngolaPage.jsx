@@ -57,9 +57,18 @@ export default function AngolaPage() {
           ))}
         </div>
 
-        <div style={{ maxWidth:1100, margin:'0 auto', padding:'64px 24px', textAlign:'center' }}>
-          <p style={{ fontSize:15, color:t.textMuted }}>
-            Use the menu above to explore Artistas, Eventos, Loja e Serviços.
+        <div style={{ maxWidth:820, margin:'0 auto', padding:'64px 24px' }}>
+          <div style={{ fontSize: 11, letterSpacing: 3, textTransform: 'uppercase', color: 'rgba(212,160,0,0.6)', marginBottom: 8, textAlign:'center' }}>
+            Entretenimento com raízes angolanas
+          </div>
+          <h2 style={{ fontSize: 'clamp(24px,4vw,36px)', fontWeight: 800, color: t.text, textAlign:'center', marginBottom: 20 }}>
+            Sobre Nós
+          </h2>
+          <p style={{ fontSize: 15, color: t.textMuted, lineHeight: 1.85, marginBottom: 16 }}>
+            Bem-vindo à Kcinternacional2006 Produções, a sua fonte de referência para entretenimento de excelência em Angola. Especializamo-nos em trazer atuações ao vivo vibrantes, espetáculos de comédia e eventos memoráveis. Com anos de experiência, somos apaixonados por oferecer entretenimento de qualidade e envolvente para o nosso público. A nossa equipa trabalha incansavelmente para selecionar uma programação diversificada que cative e inspire — quer procure uma noite de boa disposição ou uma experiência musical ao vivo inesquecível, temos algo para si.
+          </p>
+          <p style={{ fontSize: 15, color: t.textMuted, lineHeight: 1.85 }}>
+            Acreditamos no poder da atuação e da ligação humana. O nosso compromisso é não apenas satisfazer, mas superar as suas expectativas de entretenimento com criatividade e estilo. Orgulhamo-nos de colaborar com artistas talentosos, garantindo que cada espetáculo seja único e memorável. Os nossos eventos são pensados para públicos diversos, fazendo de nós a escolha certa para entretenimento em Angola — e estamos dedicados a valorizar a cultura e a comunidade local através de cada produção. Venha descobrir connosco a magia do entretenimento ao vivo.
           </p>
         </div>
 

@@ -51,6 +51,11 @@ export default function ServicesPage() {
         <h1 style={{ fontSize: 'clamp(28px,5vw,52px)', fontWeight: 800, color: t.text }}>
           {isAo ? 'Serviços' : 'Services'}
         </h1>
+        <p style={{ fontSize: 16, color: t.textMuted, marginTop: 14, maxWidth: 720, lineHeight: 1.75 }}>
+          {isAo
+            ? 'Organizar um evento pode ser uma tarefa exigente, mas com a Kcinternacional2006 Produções está em boas mãos. Somos especialistas em planeamento e gestão de eventos, oferecendo um serviço completo que cobre cada detalhe. De funções corporativas a celebrações privadas, tratamos de todos os aspetos do seu evento, da conceção à execução. A nossa equipa experiente trabalha de perto consigo para compreender a sua visão e torná-la realidade, garantindo uma experiência tranquila e memorável para si e para os seus convidados. Deixe-nos cuidar dos detalhes, para que possa concentrar-se em aproveitar o momento.'
+            : 'Organising an event can be a daunting task, but with KC International Produções, you\u2019re in capable hands. We specialise in event planning and management, offering a comprehensive service that covers every detail. From corporate functions to private celebrations, we handle every aspect of your event from concept to execution. Our experienced team works closely with you to understand your vision and bring it to life, ensuring a seamless and enjoyable experience for you and your guests. Let us take the stress out of planning so you can focus on enjoying the occasion.'}
+        </p>
       </motion.div>
 
       {loading ? (

@@ -53,8 +53,10 @@ export default function ShopPage() {
         <h1 style={{ fontSize: 'clamp(28px,5vw,52px)', fontWeight: 800, color: t.text }}>
           {isAo ? 'Loja' : 'Shop'}
         </h1>
-        <p style={{ fontSize: 16, color: t.textMuted, marginTop: 8 }}>
-          {isAo ? 'Roupa, música e cartões-presente.' : 'Clothing, music, and gift cards.'}
+        <p style={{ fontSize: 16, color: t.textMuted, marginTop: 14, maxWidth: 720, lineHeight: 1.75 }}>
+          {isAo
+            ? 'Para além das nossas atuações ao vivo, disponibilizamos uma seleção de CDs e USBs com a música dos nossos artistas, permitindo-lhe levar a experiência para casa. Encontre gravações exclusivas dos nossos talentosos artistas que dificilmente encontrará noutro lugar. Oferecemos também merchandising, incluindo peças de vestuário que celebram a cultura vibrante dos nossos eventos. Os nossos produtos são ideais para quem deseja recordar a experiência e apoiar os artistas com quem trabalhamos. Explore a nossa coleção e leve consigo um pouco do espetáculo, mesmo depois do evento terminar.'
+            : 'In addition to our live performances, we offer a curated selection of CDs and USBs featuring our artists\u2019 music, letting you take the experience home with you. Discover exclusive recordings from our talented performers that you won\u2019t easily find elsewhere. We also stock merchandise, including clothing that celebrates the vibrant culture behind our events. Our products are perfect for anyone wanting to remember the moment and support the artists we work with. Browse our collection and find a piece of the show to enjoy long after the event ends.'}
         </p>
       </motion.div>
 

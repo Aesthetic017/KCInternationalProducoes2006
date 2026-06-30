@@ -57,9 +57,18 @@ export default function UKPage() {
           ))}
         </div>
 
-        <div style={{ maxWidth:1100, margin:'0 auto', padding:'64px 24px', textAlign:'center' }}>
-          <p style={{ fontSize:15, color:t.textMuted }}>
-            Use the menu above to explore Artists, Events, Shop and Services.
+        <div style={{ maxWidth:820, margin:'0 auto', padding:'64px 24px' }}>
+          <div style={{ fontSize: 11, letterSpacing: 3, textTransform: 'uppercase', color: 'rgba(200,16,46,0.6)', marginBottom: 8, textAlign:'center' }}>
+            Liverpool-based entertainment
+          </div>
+          <h2 style={{ fontSize: 'clamp(24px,4vw,36px)', fontWeight: 800, color: t.text, textAlign:'center', marginBottom: 20 }}>
+            About Us
+          </h2>
+          <p style={{ fontSize: 15, color: t.textMuted, lineHeight: 1.85, marginBottom: 16 }}>
+            Welcome to KC International Produções, your premier source for outstanding entertainment in Liverpool. We specialise in bringing vibrant live performances, comedy shows, and memorable events to life. With years of experience behind us, we are passionate about delivering quality, engaging entertainment for our audience. Our team works tirelessly to curate a diverse range of performances that captivate and inspire — whether you're looking for a night of laughter or an unforgettable live music experience, we have something for everyone.
+          </p>
+          <p style={{ fontSize: 15, color: t.textMuted, lineHeight: 1.85 }}>
+            We believe in the power of performance and connection. Our commitment is to not only meet but exceed your entertainment needs with creativity and flair. We pride ourselves on collaborating with talented artists, ensuring every show is unique and memorable. Our events are tailored for a variety of audiences, making us the go-to choice for entertainment in Liverpool — and we're devoted to enhancing the local culture and community through everything we produce. Come and discover the joy of live entertainment with us.
           </p>
         </div>
 

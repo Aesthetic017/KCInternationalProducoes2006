@@ -51,8 +51,10 @@ export default function EventsPage() {
         <h1 style={{ fontSize: 'clamp(28px,5vw,52px)', fontWeight: 800, color: t.text }}>
           {isAo ? 'Eventos' : 'Events'}
         </h1>
-        <p style={{ fontSize: 16, color: t.textMuted, marginTop: 8 }}>
-          {isAo ? 'Próximos shows e eventos em Angola.' : 'Upcoming shows and events in the UK.'}
+        <p style={{ fontSize: 16, color: t.textMuted, marginTop: 14, maxWidth: 720, lineHeight: 1.75 }}>
+          {isAo
+            ? 'O riso é uma linguagem universal, e na Kcinternacional2006 Produções dedicamo-nos a oferecer os melhores espetáculos de comédia e eventos ao vivo. Cada evento é cuidadosamente preparado para apresentar uma variedade de estilos e atuações, de comediantes consagrados a novos talentos. Selecionamos a nossa programação com cuidado para garantir uma experiência diversificada que agrade a todos os públicos. Junte-se a nós para uma noite de boa disposição e momentos inesquecíveis com amigos e família.'
+            : 'Laughter is a universal language, and at KC International Produções, we are dedicated to delivering outstanding comedy shows and live events. Each show brings together a range of styles and performances, from established names to exciting up-and-coming talent. We carefully curate our lineup to ensure there is always something to appeal to every audience member. Join us for an evening of laughter and unforgettable moments with friends and family.'}
         </p>
       </motion.div>
 

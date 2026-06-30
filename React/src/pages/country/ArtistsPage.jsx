@@ -2,12 +2,13 @@ import { useParams, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import axios from 'axios'
-import { FiStar, FiPlay, FiInstagram, FiYoutube, FiMusic } from 'react-icons/fi'
+import { FiStar, FiPlay, FiInstagram, FiYoutube, FiMusic, FiFilm } from 'react-icons/fi'
 import { SiTiktok, SiSpotify } from 'react-icons/si'
 import CountryLayout from '../../components/CountryLayout.jsx'
 import AdminFab from '../../components/AdminFab.jsx'
 import AdminAddModal from '../../components/AdminAddModal.jsx'
 import DeleteButton from '../../components/DeleteButton.jsx'
+import ArtistMediaManager from '../../components/ArtistMediaManager.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { getTheme } from '../../theme.js'
 
@@ -23,6 +24,7 @@ export default function ArtistsPage() {
   const [artists, setArtists] = useState([])
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
+  const [mediaManagerArtist, setMediaManagerArtist] = useState(null)
 
   const load = () => {
     axios.get(`/api/artists/${country}`)
@@ -57,8 +59,10 @@ export default function ArtistsPage() {
         <h1 style={{ fontSize: 'clamp(28px,5vw,52px)', fontWeight: 800, color: t.text }}>
           {isAo ? 'Artistas' : 'Artists'}
         </h1>
-        <p style={{ fontSize: 16, color: t.textMuted, marginTop: 8 }}>
-          {isAo ? 'Conheça os nossos artistas em Angola.' : 'Discover the KC International artist roster in the UK.'}
+        <p style={{ fontSize: 16, color: t.textMuted, marginTop: 14, maxWidth: 720, lineHeight: 1.75 }}>
+          {isAo
+            ? 'Na Kcinternacional2006 Produções, orgulhamo-nos de trabalhar com um elenco diversificado de artistas talentosos, desde nomes consagrados a novas vozes em ascensão. Cada artista é cuidadosamente selecionado pela sua qualidade artística e capacidade de cativar o público. Explore os perfis abaixo para conhecer o seu trabalho, ouvir as suas músicas e reservar a sua próxima atuação.'
+            : 'At KC International Produções, we take pride in representing a diverse roster of talented performers, from established names to exciting rising stars. Each artist is carefully selected for their artistry and ability to captivate an audience. Browse the profiles below to discover their work, listen to their music, and book them for your next event.'}
         </p>
       </motion.div>
 
@@ -97,6 +101,21 @@ export default function ArtistsPage() {
               }}
             >
               {isAdmin && <DeleteButton onClick={() => handleDelete(a._id)} />}
+              {isAdmin && (
+                <button
+                  onClick={(e) => { e.stopPropagation(); setMediaManagerArtist(a) }}
+                  title="Manage videos & tracks"
+                  style={{
+                    position: 'absolute', top: 10, left: 10, zIndex: 5,
+                    width: 28, height: 28, borderRadius: '50%',
+                    background: 'rgba(0,0,0,0.55)', border: `1px solid ${t.accent}66`,
+                    color: t.accentAlt, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 13, cursor: 'pointer',
+                  }}
+                >
+                  <FiFilm size={13} />
+                </button>
+              )}
 
               {/* Photo area — portrait crop, not a tiny circle */}
               <Link to={`/${country}/artists/${a._id}`} style={{ display: 'block' }}>
@@ -201,10 +220,26 @@ export default function ArtistsPage() {
               { key: 'spotify', label: 'Spotify URL', type: 'url', required: false, placeholder: 'https://open.spotify.com/...' },
               { key: 'bookingType', label: isAo ? 'Tipo de reserva' : 'Booking type', type: 'select', options: ['quote', 'fixed'] },
               { key: 'bookingPrice', label: isAo ? `Preço fixo (se aplicável)` : 'Fixed price (if applicable)', type: 'number', required: false, placeholder: '0' },
+              { key: 'media', label: isAo ? 'Vídeos e Faixas (opcional)' : 'Videos & Tracks (optional)', type: 'media', required: false },
             ]}
           />
         </>
       )}
+
+      <ArtistMediaManager
+        country={country}
+        artist={mediaManagerArtist}
+        open={!!mediaManagerArtist}
+        onClose={() => setMediaManagerArtist(null)}
+        onUpdated={() => {
+          load()
+          // Keep the modal's view in sync by refetching the specific artist after a change
+          axios.get(`/api/artists/${country}`).then(res => {
+            const updated = res.data.find(x => x._id === mediaManagerArtist?._id)
+            if (updated) setMediaManagerArtist(updated)
+          })
+        }}
+      />
     </CountryLayout>
   )
 }

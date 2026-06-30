@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import axios from 'axios'
-import { FiX, FiUpload, FiCheck } from 'react-icons/fi'
+import { FiX, FiUpload, FiCheck, FiVideo, FiMusic, FiTrash2 } from 'react-icons/fi'
 import { getTheme } from '../theme.js'
 
 const ALL_SIZES = ['XS', 'S', 'M', 'L', 'XL']
 
-// fields: [{ key, label, type: 'text'|'number'|'select'|'image'|'url'|'sizes', options?, placeholder? }]
+// fields: [{ key, label, type: 'text'|'number'|'select'|'image'|'url'|'sizes'|'media', options?, placeholder? }]
 export default function AdminAddModal({ country, open, onClose, fields, onSubmit, title }) {
   const t = getTheme(country)
   const [form, setForm] = useState({})
@@ -20,9 +20,7 @@ export default function AdminAddModal({ country, open, onClose, fields, onSubmit
     setForm(f => {
       const current = f.sizes || []
       const exists = current.find(s => s.size === size)
-      if (exists) {
-        return { ...f, sizes: current.filter(s => s.size !== size) }
-      }
+      if (exists) return { ...f, sizes: current.filter(s => s.size !== size) }
       return { ...f, sizes: [...current, { size, stock: 0 }] }
     })
   }
@@ -34,17 +32,48 @@ export default function AdminAddModal({ country, open, onClose, fields, onSubmit
     }))
   }
 
-  const handleImageUpload = async (key, file) => {
+  const handleFileUpload = async (key, file) => {
     if (!file) return
     setUploading(true)
     setError('')
     try {
       const data = new FormData()
-      data.append('image', file)
+      data.append('file', file)
       const res = await axios.post('/api/upload', data, { headers: { 'Content-Type': 'multipart/form-data' } })
       set(key, res.data.url)
     } catch (err) {
-      setError(err.response?.data?.message || 'Image upload failed')
+      setError(err.response?.data?.message || 'File upload failed')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const addMediaItem = (key, kind) => {
+    setForm(f => ({
+      ...f,
+      [key]: [...(f[key] || []), { kind, source: 'link', url: '', title: '' }],
+    }))
+  }
+  const updateMediaItem = (key, index, patch) => {
+    setForm(f => ({
+      ...f,
+      [key]: f[key].map((m, i) => i === index ? { ...m, ...patch } : m),
+    }))
+  }
+  const removeMediaItem = (key, index) => {
+    setForm(f => ({ ...f, [key]: f[key].filter((_, i) => i !== index) }))
+  }
+  const uploadMediaFile = async (key, index, file) => {
+    if (!file) return
+    setUploading(true)
+    setError('')
+    try {
+      const data = new FormData()
+      data.append('file', file)
+      const res = await axios.post('/api/upload', data, { headers: { 'Content-Type': 'multipart/form-data' } })
+      updateMediaItem(key, index, { url: res.data.url })
+    } catch (err) {
+      setError(err.response?.data?.message || 'File upload failed')
     } finally {
       setUploading(false)
     }
@@ -91,7 +120,7 @@ export default function AdminAddModal({ country, open, onClose, fields, onSubmit
             initial={{ scale: 0.92, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.92, opacity: 0 }}
             style={{
               background: t.formBg, border: `1px solid ${t.formBorder}`,
-              borderRadius: 20, padding: '28px 26px', width: '100%', maxWidth: 440,
+              borderRadius: 20, padding: '28px 26px', width: '100%', maxWidth: 460,
               display: 'flex', flexDirection: 'column', gap: 14,
               backdropFilter: 'blur(14px)', maxHeight: '90vh', overflowY: 'auto',
             }}
@@ -110,7 +139,6 @@ export default function AdminAddModal({ country, open, onClose, fields, onSubmit
             )}
 
             {fields.map(f => {
-              // Conditionally hide fields based on another field's value (e.g. sizes only for category=clothing)
               if (f.showIf && !f.showIf(form)) return null
 
               return (
@@ -166,13 +194,99 @@ export default function AdminAddModal({ country, open, onClose, fields, onSubmit
                       )}
                     </div>
 
+                  ) : f.type === 'media' ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                      <div style={{ display: 'flex', gap: 8 }}>
+                        <button type="button" onClick={() => addMediaItem(f.key, 'video')} style={{
+                          flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                          padding: '9px', borderRadius: 9, fontSize: 12.5, fontWeight: 600, cursor: 'pointer',
+                          background: 'transparent', color: t.text, border: `1px solid ${t.inputBorder}`,
+                        }}>
+                          <FiVideo size={13} /> Add video
+                        </button>
+                        <button type="button" onClick={() => addMediaItem(f.key, 'track')} style={{
+                          flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                          padding: '9px', borderRadius: 9, fontSize: 12.5, fontWeight: 600, cursor: 'pointer',
+                          background: 'transparent', color: t.text, border: `1px solid ${t.inputBorder}`,
+                        }}>
+                          <FiMusic size={13} /> Add track
+                        </button>
+                      </div>
+
+                      {(form[f.key] || []).map((m, i) => (
+                        <div key={i} style={{
+                          background: 'rgba(0,0,0,0.2)', border: `1px solid ${t.inputBorder}`,
+                          borderRadius: 10, padding: 12, display: 'flex', flexDirection: 'column', gap: 8,
+                        }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ fontSize: 12, fontWeight: 600, color: t.text, display: 'flex', alignItems: 'center', gap: 5 }}>
+                              {m.kind === 'video' ? <FiVideo size={12} /> : <FiMusic size={12} />}
+                              {m.kind === 'video' ? 'Video' : 'Track'}
+                            </span>
+                            <button type="button" onClick={() => removeMediaItem(f.key, i)} style={{ color: '#FCA5A5', background: 'none', border: 'none', cursor: 'pointer' }}>
+                              <FiTrash2 size={13} />
+                            </button>
+                          </div>
+
+                          <input
+                            value={m.title} onChange={e => updateMediaItem(f.key, i, { title: e.target.value })}
+                            placeholder={m.kind === 'video' ? 'Video title (optional)' : 'Track title (optional)'}
+                            style={{ ...inputStyle, padding: '8px 12px', fontSize: 13 }}
+                          />
+
+                          <div style={{ display: 'flex', gap: 6 }}>
+                            <button type="button" onClick={() => updateMediaItem(f.key, i, { source: 'link', url: '' })} style={{
+                              flex: 1, padding: '6px', borderRadius: 7, fontSize: 11.5, fontWeight: 600, cursor: 'pointer',
+                              background: m.source === 'link' ? t.accent : 'transparent',
+                              color: m.source === 'link' ? t.btnPrimaryColor : t.textMuted,
+                              border: `1px solid ${m.source === 'link' ? t.accent : t.inputBorder}`,
+                            }}>
+                              {m.kind === 'video' ? 'YouTube link' : 'Streaming link'}
+                            </button>
+                            <button type="button" onClick={() => updateMediaItem(f.key, i, { source: 'upload', url: '' })} style={{
+                              flex: 1, padding: '6px', borderRadius: 7, fontSize: 11.5, fontWeight: 600, cursor: 'pointer',
+                              background: m.source === 'upload' ? t.accent : 'transparent',
+                              color: m.source === 'upload' ? t.btnPrimaryColor : t.textMuted,
+                              border: `1px solid ${m.source === 'upload' ? t.accent : t.inputBorder}`,
+                            }}>
+                              Upload file
+                            </button>
+                          </div>
+
+                          {m.source === 'link' ? (
+                            <input
+                              value={m.url} onChange={e => updateMediaItem(f.key, i, { url: e.target.value })}
+                              placeholder={m.kind === 'video' ? 'https://youtube.com/watch?v=...' : 'https://open.spotify.com/track/... or SoundCloud URL'}
+                              style={{ ...inputStyle, padding: '8px 12px', fontSize: 13 }}
+                            />
+                          ) : (
+                            <div>
+                              <input
+                                type="file" accept={m.kind === 'video' ? 'video/*' : 'audio/*'}
+                                id={`media-upload-${f.key}-${i}`}
+                                style={{ display: 'none' }}
+                                onChange={e => uploadMediaFile(f.key, i, e.target.files[0])}
+                              />
+                              <label htmlFor={`media-upload-${f.key}-${i}`} style={{
+                                ...inputStyle, padding: '8px 12px', fontSize: 13, cursor: 'pointer',
+                                display: 'flex', alignItems: 'center', gap: 8,
+                                color: m.url ? t.text : t.textMuted,
+                              }}>
+                                {uploading ? 'Uploading...' : m.url ? (<><FiCheck style={{ color: t.accentAlt }} size={13} /> Uploaded</>) : (<><FiUpload size={13} /> Choose {m.kind === 'video' ? 'video' : 'audio'} file</>)}
+                              </label>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
                   ) : f.type === 'image' ? (
                     <div>
                       <input
                         type="file" accept="image/*"
                         id={`upload-${f.key}`}
                         style={{ display: 'none' }}
-                        onChange={e => handleImageUpload(f.key, e.target.files[0])}
+                        onChange={e => handleFileUpload(f.key, e.target.files[0])}
                       />
                       <label htmlFor={`upload-${f.key}`} style={{
                         ...inputStyle, cursor: 'pointer',

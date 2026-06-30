@@ -15,10 +15,18 @@ const artistSchema = new mongoose.Schema({
     spotify:   { type: String, default: '' },
   },
 
-  // Booking configuration — admin sets per artist
   bookingType:  { type: String, enum: ['fixed', 'quote'], default: 'quote' },
-  bookingPrice: { type: Number, default: 0 }, // only used when bookingType is 'fixed'
+  bookingPrice: { type: Number, default: 0 },
   bookingCurrency: { type: String, default: '£' },
+
+  // Videos and music tracks — admin can either upload a file directly or paste a link
+  // (YouTube for video, Spotify/SoundCloud for tracks). `url` holds whichever was provided.
+  media: [{
+    kind:   { type: String, enum: ['video', 'track'], required: true },
+    source: { type: String, enum: ['upload', 'link'], required: true },
+    url:    { type: String, required: true },
+    title:  { type: String, default: '' },
+  }],
 }, { timestamps: true });
 
 module.exports = mongoose.model('Artist', artistSchema);

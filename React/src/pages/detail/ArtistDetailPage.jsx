@@ -7,6 +7,7 @@ import { SiTiktok, SiSpotify } from 'react-icons/si'
 import CountryBackground from '../../components/CountryBackground.jsx'
 import CountryNavbar from '../../components/CountryNavbar.jsx'
 import BookArtistModal from '../../components/BookArtistModal.jsx'
+import ArtistMediaSection from '../../components/ArtistMediaSection.jsx'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { useCart } from '../../context/CartContext.jsx'
 import { getTheme } from '../../theme.js'
@@ -67,7 +68,7 @@ export default function ArtistDetailPage() {
       <CountryBackground country={country} />
       <CountryNavbar country={country} activePage={`/${country}/artists`} />
 
-      <div style={{ position: 'relative', zIndex: 2, paddingTop: 90, maxWidth: 700, margin: '0 auto', padding: '90px 24px 60px' }}>
+      <div style={{ position: 'relative', zIndex: 2, paddingTop: 90, maxWidth: 760, margin: '0 auto', padding: '90px 24px 60px' }}>
         <Link to={`/${country}/artists`} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: t.backColor, fontSize: 13, marginBottom: 24 }}>
           <FiArrowLeft size={14} /> {isAo ? 'Voltar aos Artistas' : 'Back to Artists'}
         </Link>
@@ -153,6 +154,8 @@ export default function ArtistDetailPage() {
               </p>
             )}
           </div>
+
+          <ArtistMediaSection media={artist.media} t={t} isAo={isAo} />
         </motion.div>
       </div>
 
